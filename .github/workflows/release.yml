@@ -21,22 +21,26 @@ jobs:
           - os: windows-latest
             os_name: Windows (x64)
             out_name: paping-windows-amd64.exe
+            cmake_flags: ""
           - os: ubuntu-latest
             os_name: Linux (x64)
             out_name: paping-linux-amd64
+            cmake_flags: ""
           - os: macos-latest
             os_name: macOS (Apple Silicon / M1)
             out_name: paping-macos-arm64
-          - os: macos-14
+            cmake_flags: "-DCMAKE_OSX_ARCHITECTURES=arm64"
+          - os: macos-latest
             os_name: macOS (Intel)
             out_name: paping-macos-amd64
+            cmake_flags: "-DCMAKE_OSX_ARCHITECTURES=x86_64"
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
     - name: Configure CMake
-      run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+      run: cmake -B build -DCMAKE_BUILD_TYPE=Release ${{ matrix.cmake_flags }}
 
     - name: Build
       run: cmake --build build --config Release
