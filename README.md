@@ -1,64 +1,82 @@
-# paping
+# Paping-NG
 
-TCP port ping utility. Tests connectivity to a host on a specific TCP port and reports latency, similar to how ICMP ping works - but over TCP.
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![C++](https://img.shields.io/badge/Language-C++17-00599C.svg)](https://en.cppreference.com/w/cpp/compiler_support)
+
+**Paping-NG** – the modern successor to `paping`. Cross-platform TCP/UDP port ping tool rewritten from scratch in modern C++. Fast, lightweight, and open-source.
+
+Replaces the unmaintained original [9minds/paping](https://github.com/9minds/paping) and legacy fixes like [arch3rek/Paping-fixed](https://github.com/arch3rek/Paping-fixed).
+
+## Features
+
+- **Familiar & Intuitive**: Works just like the original `paping` tool. The familiar command-line interface ensures zero learning curve for existing users.
+- **Cross-platform**: Native support for Linux, macOS, Windows, and ARM architectures.
+- **High Performance**: Rewritten from scratch in C++ for maximum efficiency.
+- **Advanced Metrics**: Accurate RTT (min/avg/max), connection statistics, and timeouts.
+- **Modern Networking**: Support for IPv4, IPv6, and standard TCP handshakes.
+- **Drop-in Replacement**: Uses the exact same `paping` command name. You don't have to break your muscle memory or learn new tools – it simply works the way you expect.
+
+
+## Installation
+
+### Pre-built Binaries (Recommended)
+Download the ready-to-use executables for Windows and Linux from the [Releases](https://github.com/arch3rek/Paping-NG/releases) page.
+
+### Build from source
+If you prefer to compile it yourself, you will need `CMake` and a modern C++ compiler (GCC/Clang/MSVC):
+
+```bash
+git clone https://github.com/arch3rek/Paping-NG.git
+cd Paping-NG
+mkdir build && cd build
+cmake ..
+cmake --build .
+```
 
 ## Usage
 
-```
-paping <host> -p <port> [options]
-```
+Paping-NG is designed to be highly intuitive. It mimics the behavior and arguments of the original tool, allowing you to seamlessly integrate it into your existing workflow.
 
-### Options
+```bash
+# Basic TCP ping
+paping example.com -p 80
 
-| Flag | Description |
-|---|---|
-| `-p`, `--port N` | TCP port to probe *(required)* |
-| `-c`, `--count N` | Stop after N probes (default: run forever) |
-| `-t`, `--timeout N` | Connection timeout in ms (default: 1000) |
-| `--nocolor` | Disable colored output |
-| `-h`, `--help` | Show help |
+# Specify amount of packets (-c)
+paping 8.8.8.8 -p 53 -c 5
 
-### Examples
-
-```
-paping google.com -p 80
-paping 192.168.1.1 -p 443 -c 10
-paping myserver.local -p 3306 -t 500 --nocolor
+# See all options
+paping --help
 ```
 
-### Output
+**Example Output:**
+```text
+Paping-NG v1.0 - Copyright (c) 2026 Oliver (arch3r.eu)
 
-```
-paping v1.0 - Copyright (c) 2026 Oliver (arch3r.eu)
+Connecting to google.com [142.250.120.139] on TCP port 80:
 
-Connecting to google.com [142.250.130.138] on TCP port 80:
-
-Connected to 142.250.130.138: time=2.48ms protocol=TCP port=80
-Connected to 142.250.130.138: time=2.91ms protocol=TCP port=80
-Connected to 142.250.130.138: time=2.87ms protocol=TCP port=80
+Connected to 142.250.120.139: time=80.70ms protocol=TCP port=80
+Connected to 142.250.120.139: time=11.75ms protocol=TCP port=80
+Connected to 142.250.120.139: time=12.40ms protocol=TCP port=80
+Connected to 142.250.120.139: time=13.53ms protocol=TCP port=80
 
 Connection statistics:
-  Probed = 3, Connected = 3, Failed = 0 (0.00%)
+  Probed = 4, Connected = 4, Failed = 0 (0.00%)
 Approximate connection times:
-  Minimum = 2.48ms, Maximum = 2.91ms, Average = 2.75ms
+  Minimum = 11.75ms, Maximum = 80.70ms, Average = 29.60ms
 ```
 
-## Building
+## Why Paping-NG?
 
-Requires CMake 3.20+ and a C++20 compiler (MSVC 2022, GCC 12+, or Clang 15+).
+| Feature | Legacy `paping` | `Paping-NG` |
+|---------|-----------------|-------------|
+| **Status** | Abandoned (since ~2016) | Actively Maintained |
+| **Codebase** | Old / Forked | Modern C++17 Rewrite |
+| **Architecture** | 32-bit mostly | Full 64-bit / ARM |
+| **License** | MIT | GPL-3.0 |
 
-```
-cmake -B build
-cmake --build build --config Release
-```
+## Acknowledgments
 
-The binary is placed at `build/Release/paping.exe` on Windows or `build/paping` on Linux.
+Special thanks to [MatStef132](https://github.com/MatStef132) for their contributions and help with this project.
 
-## Platform support
-
-- Windows 10 / 11 (x64)
-- Linux
-
-## License
-
-Copyright (c) 2026 Oliver — [arch3r.eu](https://arch3r.eu)
+---
+*Disclaimer: Paping-NG is an independent, from-scratch rewrite and is not affiliated with the original `9minds/paping` developers.*
