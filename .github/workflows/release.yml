@@ -7,6 +7,9 @@ on:
 permissions:
   contents: write
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   build:
     name: Build on ${{ matrix.os_name }}
@@ -24,7 +27,7 @@ jobs:
             bin_path: build/paping
             out_name: paping-linux-amd64
           - os: macos-latest
-            os_name: macOS (Apple Silicon)
+            os_name: macOS (Apple Silicon / M1)
             bin_path: build/paping
             out_name: paping-macos-arm64
           - os: macos-14
