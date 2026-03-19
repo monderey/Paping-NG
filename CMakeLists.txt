@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-cmake_policy(SET CMP0091 NEW) #fixes MSVC runtime library selection
+cmake_policy(SET CMP0091 NEW)
 
 project(paping VERSION 1.0.2 LANGUAGES CXX)
 
@@ -18,9 +18,7 @@ if(MSVC)
         /W4
         /WX-
         /utf-8
-        /GL
     )
-    target_link_options(paping PRIVATE /LTCG)
 else()
     target_compile_options(paping PRIVATE -O3 -Wall -Wextra -Wpedantic)
 endif()
