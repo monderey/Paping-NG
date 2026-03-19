@@ -22,7 +22,7 @@ jobs:
           - os: windows-latest
             os_name: Windows (x64)
             out_name: paping-windows-amd64.exe
-            cmake_flags: "-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded"
+            cmake_flags: "-G \"Visual Studio 17 2022\" -A x64 -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded"
           - os: ubuntu-latest
             os_name: Linux (x64)
             out_name: paping-linux-amd64
