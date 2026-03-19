@@ -1,5 +1,7 @@
-cmake_minimum_required(VERSION 3.20)
-project(paping LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.15)
+cmake_policy(SET CMP0091 NEW) #fixes MSVC runtime library selection
+
+project(paping VERSION 1.0.2 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD          20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -7,13 +9,16 @@ set(CMAKE_CXX_EXTENSIONS        OFF)
 
 add_executable(paping src/paping.cpp)
 
+set_property(TARGET paping PROPERTY
+    MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+
 if(MSVC)
     target_compile_options(paping PRIVATE
-        /O2         # maximize speed
-        /W4         # high warning level
-        /WX-        # warnings not errors (tolerate MSVC pedantry)
-        /utf-8      # source & execution charset UTF-8
-        /GL         # whole-program optimization
+        /O2
+        /W4
+        /WX-
+        /utf-8
+        /GL
     )
     target_link_options(paping PRIVATE /LTCG)
 else()
@@ -21,7 +26,5 @@ else()
 endif()
 
 if(WIN32)
-    # ws2_32 is already pulled in by the #pragma comment for MSVC;
-    # this covers MinGW / Clang-cl builds.
     target_link_libraries(paping PRIVATE ws2_32)
 endif()

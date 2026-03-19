@@ -21,7 +21,7 @@ jobs:
           - os: windows-latest
             os_name: Windows (x64)
             out_name: paping-windows-amd64.exe
-            cmake_flags: ""
+            cmake_flags: "-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded"
           - os: ubuntu-latest
             os_name: Linux (x64)
             out_name: paping-linux-amd64
@@ -37,7 +37,7 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: Configure CMake
       run: cmake -B build -DCMAKE_BUILD_TYPE=Release ${{ matrix.cmake_flags }}
@@ -47,9 +47,10 @@ jobs:
 
     - name: Find and Rename binary (Windows)
       if: runner.os == 'Windows'
+      shell: pwsh
       run: |
-        Get-ChildItem -Path build -Filter *.exe -Recurse | Select-Object -First 1 | Rename-Item -NewName ${{ matrix.out_name }}
-        Get-ChildItem -Path build -Filter ${{ matrix.out_name }} -Recurse | Select-Object -First 1 | Move-Item -Destination .
+        $bin = Get-ChildItem -Path build -Filter *.exe -Recurse | Select-Object -First 1
+        Copy-Item $bin.FullName -Destination ${{ matrix.out_name }}
 
     - name: Rename binary (Linux / macOS)
       if: runner.os != 'Windows'
