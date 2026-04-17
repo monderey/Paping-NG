@@ -165,11 +165,13 @@ static Probe tcp_probe(const std::string& ip, int port, int timeout_ms, double& 
     SOCKET sock = ::socket(res->ai_family, SOCK_STREAM, IPPROTO_TCP);
     if (sock == INVALID_SOCKET) { freeaddrinfo(res); return Probe::Failed; }
 
-    if (static_cast<std::size_t>(sock) >= FD_SETSIZE) {
+#ifndef _WIN32
+    if (sock >= FD_SETSIZE) {
         closesocket(sock);
         freeaddrinfo(res);
         return Probe::Failed;
     }
+#endif
 
     // non-blocking connect
 #ifdef _WIN32
